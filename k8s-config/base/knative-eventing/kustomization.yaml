@@ -6,3 +6,4 @@ resources:
   - eventing-natss.yaml
   - eventing-crds.yaml
   - mt-channel-broker.yaml
+  - eventing-core.yaml
