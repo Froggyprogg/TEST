@@ -5,3 +5,4 @@ resources:
   - nats
   - nats-io
   - knative-samples
+  - https://github.com/knative/eventing/releases/download/knative-v1.9.6/eventing-core.yaml
