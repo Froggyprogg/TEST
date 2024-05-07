@@ -1,0 +1,104 @@
+# Namespace for sample application
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: knative-samples
+---
+# Helloworld-go app deploment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: froggyprogg-smp
+  namespace: knative-samples
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: froggyprogg-smp
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: froggyprogg-smp
+          image: docker.io/d3adl0rd/helloworld-go
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: froggyprogg-smp
+  namespace: knative-samples
+spec:
+  selector:
+    app: froggyprogg-smp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: smp-trigger
+  namespace: knative-samples
+spec:
+  broker: nats-broker
+  filter:
+    attributes:
+      type: dev.smp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: froggyprogg-smp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-display
+  namespace: knative-samples
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: event-display
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: helloworld-go
+          # Source code: https://github.com/knative/eventing/tree/main/cmd/event_display
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/event_display
+---
+# Service that exposes event-display app.
+# This will be the subscriber for the Trigger
+kind: Service
+apiVersion: v1
+metadata:
+  name: event-display
+  namespace: knative-samples
+spec:
+  selector:
+    app: event-display
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: event-display
+  namespace: knative-samples
+spec:
+  broker: nats-broker
+  filter:
+    attributes:
+      type: dev.knative.samples.hifromknative
+      source: knative/eventing/samples/hello-world
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: event-display
