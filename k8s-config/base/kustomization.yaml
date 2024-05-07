@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - core
   - knative-eventing
   - nats
   - nats-io
   - knative-samples
-  - https://github.com/knative/eventing/releases/download/knative-v1.9.6/eventing-core.yaml
