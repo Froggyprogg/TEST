@@ -3,5 +3,4 @@ kind: Kustomization
 resources:
   - config-nats.yaml
   - NatsJetstreamChannel-simple.yaml
-  - eventing-natss.yaml
   - eventing-crds.yaml
