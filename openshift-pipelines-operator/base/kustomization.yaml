@@ -7,5 +7,5 @@ namespace: openshift-operators
 resources:
   - subscription.yaml
 
-components:
-  - ../components/enable-console-plugin
+#components:
+#  - ../components/enable-console-plugin
