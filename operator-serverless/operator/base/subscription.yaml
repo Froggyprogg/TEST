@@ -2,10 +2,10 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: knative-operator
-  namespace: openshift-serverless
+  namespace: openshift-operators
 spec:
   channel: stable
   installPlanApproval: Automatic
   name: knative-operator
-  source: operatorhubio-catalog
-  sourceNamespace: olm
+  source: community-operators
+  sourceNamespace: openshift-marketplace
