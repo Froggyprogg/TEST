@@ -7,5 +7,5 @@ spec:
   channel: stable
   installPlanApproval: Automatic
   name: knative-operator
-  source: community-operators
+  source: operatorhubio-catalog
   sourceNamespace: openshift-marketplace

@@ -8,4 +8,4 @@ spec:
   installPlanApproval: Automatic
   name: tekton
   source: operatorhubio-catalog
-  sourceNamespace: olm
+  sourceNamespace: openshift-marketplace

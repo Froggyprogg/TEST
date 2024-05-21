@@ -8,29 +8,29 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: froggyprogg-smp
+  name: sebbia-smp
   namespace: knative-samples
 spec:
   replicas: 1
   selector:
     matchLabels: &labels
-      app: froggyprogg-smp
+      app: sebbia-smp
   template:
     metadata:
       labels: *labels
     spec:
       containers:
-        - name: froggyprogg-smp
+        - name: sebbia-smp
           image: docker.io/d3adl0rd/helloworld-go
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: froggyprogg-smp
+  name: sebbia-smp
   namespace: knative-samples
 spec:
   selector:
-    app: froggyprogg-smp
+    app: sebbia-smp
   ports:
     - protocol: TCP
       port: 80
@@ -42,7 +42,7 @@ metadata:
   name: smp-trigger
   namespace: knative-samples
 spec:
-  broker: nats-broker
+  broker: default
   filter:
     attributes:
       type: dev.smp
@@ -50,7 +50,7 @@ spec:
     ref:
       apiVersion: v1
       kind: Service
-      name: froggyprogg-smp
+      name: sebbia-smp
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -92,7 +92,7 @@ metadata:
   name: event-display
   namespace: knative-samples
 spec:
-  broker: nats-broker
+  broker: default
   filter:
     attributes:
       type: dev.knative.samples.hifromknative
@@ -102,3 +102,10 @@ spec:
       apiVersion: v1
       kind: Service
       name: event-display
+---
+apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  name: default
+  namespace: knative-samples
+spec: {}
