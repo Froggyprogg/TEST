@@ -1,0 +1,21 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: gitea-template
+spec:
+  params:
+    - name: username
+      default: "Kubernetes"
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: gitea-run-
+      spec:
+        pipelineRef:
+          name: clone-build-push
+        params:
+          - name: repo-url
+            type: string
+          - name: image-reference
+            type: string
