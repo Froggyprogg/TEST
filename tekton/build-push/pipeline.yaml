@@ -27,7 +27,7 @@ spec:
       params:
         - name: url
           value: $(params.repo-url)
-    - name: build-push
+    - name: commit
       runAfter: ["fetch-source"]
       taskRef:
         name: kaniko
@@ -39,3 +39,15 @@ spec:
       params:
         - name: IMAGE
           value: $(params.image-reference)
+        - name: build-push
+          runAfter: [ "fetch-source" ]
+          taskRef:
+            name: kaniko
+          workspaces:
+            - name: source
+              workspace: shared-data
+            - name: dockerconfig
+              workspace: docker-credentials
+          params:
+            - name: IMAGE
+              value: $(params.image-reference)

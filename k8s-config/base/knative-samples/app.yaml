@@ -4,33 +4,32 @@ kind: Namespace
 metadata:
   name: knative-samples
 ---
-# Helloworld-go app deploment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: froggyprogg-smp
+  name: smp
   namespace: knative-samples
 spec:
   replicas: 1
   selector:
     matchLabels: &labels
-      app: froggyprogg-smp
+      app: smp
   template:
     metadata:
       labels: *labels
     spec:
       containers:
-        - name: froggyprogg-smp
-          image: docker.io/d3adl0rd/helloworld-go
+        - name: smp
+          image: dockerprivate.apps.okd.sebbia.org/dev/smp
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: froggyprogg-smp
+  name: smp
   namespace: knative-samples
 spec:
   selector:
-    app: froggyprogg-smp
+    app: smp
   ports:
     - protocol: TCP
       port: 80
@@ -50,7 +49,7 @@ spec:
     ref:
       apiVersion: v1
       kind: Service
-      name: froggyprogg-smp
+      name: smp
 ---
 apiVersion: apps/v1
 kind: Deployment

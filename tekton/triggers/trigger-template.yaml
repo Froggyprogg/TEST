@@ -3,19 +3,35 @@ kind: TriggerTemplate
 metadata:
   name: gitea-template
 spec:
-  params:
-    - name: username
-      default: "Kubernetes"
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
         generateName: gitea-run-
       spec:
+        podTemplate:
+          securityContext:
+            fsGroup: 65532
         pipelineRef:
           name: clone-build-push
         params:
           - name: repo-url
-            type: string
+            value: ssh://git@git.apps.okd.sebbia.org:2222/Sebbia/dev.git
           - name: image-reference
-            type: string
+            value: dockerprivate.apps.okd.sebbia.org/dev/smp
+        serviceAccountName: tekton-pipeline-trigger
+        workspaces:
+          - name: shared-data
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 0.3Gi
+          - name: git-credentials
+            secret:
+              secretName: git-credentials
+          - name: docker-credentials
+            secret:
+              secretName: docker-credentials
